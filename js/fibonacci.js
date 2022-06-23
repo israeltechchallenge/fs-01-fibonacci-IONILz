@@ -28,9 +28,9 @@ function getFibonacciFromServer(num) {
             elementOfResult.innerHTML = `&nbsp;<u><b>${data.result}</b></u>`;
             loadingSpinner.classList.add("visually-hidden");
         }).catch(function (error) {
-            // elementOfResult.innerHTML = `<b>${error}</b>`;
             elementOfResult.classList.add("text-danger");
-            elementOfResult.innerHTML = `&nbsp;Server Error: 42 is the meaning of life`;
+            elementOfResult.innerHTML = `&nbsp;${error}`;
+            // elementOfResult.innerHTML = `&nbsp;Server Error: 42 is the meaning of life`;
             loadingSpinner.classList.add("visually-hidden");
         })
 };

@@ -2,6 +2,7 @@ const elementOfIndex = document.getElementById("num1");
 const elementOfResult = document.getElementById("num2");
 let chosenFibonacci = 13;
 
+// Another function
 // function getFibonacci(x) {
 //     if (x === 0) {
 //         return 0;

@@ -14,7 +14,7 @@ function putYOfFibonacci() {
         elementOfIndex.classList.add("is-invalid");
         elementOfIndex.classList.add("text-danger");
     } else {
-        elementOfResult.innerHTML = `<u><b>${getFibonacciFromServer(elementOfIndex.value)}</b></u>`;
+        getFibonacciFromServer(elementOfIndex.value);
     }
 };
 

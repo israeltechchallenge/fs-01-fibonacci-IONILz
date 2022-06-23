@@ -5,7 +5,7 @@ const elementOfResult = document.getElementById("num2");
 calculateButton.addEventListener("click", putYOfFibonacci);
 
 function putYOfFibonacci() {
-    elementOfResult.innerHTML = `<u><b>${getFibonacciFromServer(elementOfIndex.value)}</b></u>`;
+    getFibonacciFromServer(elementOfIndex.value);
 };
 
 function getFibonacciFromServer(num) {

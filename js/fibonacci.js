@@ -1,21 +1,10 @@
 const elementOfIndex = document.getElementById("num1");
+const calculateButton = document.getElementById("btn1");
 const elementOfResult = document.getElementById("num2");
-let chosenFibonacci = 13;
+let chosenFibonacci;
 
-// Another function
-// function getFibonacci(x) {
-//     if (x === 0) {
-//         return 0;
-//     } else if (x === 1) {
-//         return 1;
-//     } else {
-//         let arrOfFibonacci = [0, 1];
-//         for (let index = 0; index < x - 1; index++) {
-//             arrOfFibonacci[arrOfFibonacci.length] = arrOfFibonacci[arrOfFibonacci.length - 2] + arrOfFibonacci[arrOfFibonacci.length - 1];
-//         }
-//         return arrOfFibonacci[x];
-//     }
-// };
+elementOfIndex.addEventListener("input", changeFibonacciIndex);
+calculateButton.addEventListener("click", putYOfFibonacci);
 
 function getFibonacci(x) {
     if (x <= 0) {
@@ -32,5 +21,10 @@ function getFibonacci(x) {
     }
 };
 
-elementOfIndex.innerText = chosenFibonacci;
-elementOfResult.innerText = getFibonacci(chosenFibonacci);
+function changeFibonacciIndex() {
+    chosenFibonacci = elementOfIndex.value;
+};
+
+function putYOfFibonacci() {
+    elementOfResult.innerHTML = `<u><b>${getFibonacci(chosenFibonacci)}</b></u>`;
+};

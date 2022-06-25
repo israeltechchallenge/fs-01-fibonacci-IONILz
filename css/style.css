@@ -5,3 +5,10 @@ input[type="number"] {
   margin: 0;
   -moz-appearance: textfield;
 }
+#validationFeedback1 {
+  width: 10rem;
+  align-self: flex-end;
+  /* text-align: center; */
+  padding: 6px;
+  font-family: sans-serif;
+}

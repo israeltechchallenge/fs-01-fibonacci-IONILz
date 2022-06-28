@@ -1,69 +1,93 @@
+//Deceleration of HTML Elements
 const elementOfIndex = document.getElementById("num1");
 const calculateButton = document.getElementById("btn1");
 const elementOfResult = document.getElementById("num2");
 const loadingSpinner = document.getElementById("spinner");
+const validFeedback = document.getElementById("validationFeedback1");
+const calcRes = document.getElementById("resultsOfCalculations");
 
-calculateButton.addEventListener("click", putYOfFibonacci);
+//On a refresh of the page, the list of results will be displayed
+getFibonacciResults().then(arrayOfResponses => displayResults(arrayOfResponses));
 
-function putYOfFibonacci() {
+//Calculation button
+calculateButton.addEventListener("click", putResults);
+
+function putResults() {
+    loadingSpinner.classList.remove("visually-hidden");
     elementOfIndex.classList.remove("is-invalid");
     elementOfIndex.classList.remove("text-danger");
     elementOfResult.classList.remove("text-danger");
+    elementOfResult.innerHTML = "";
     if (elementOfIndex.value > 50) {
-        elementOfResult.innerHTML = "";
         elementOfIndex.classList.add("is-invalid");
         elementOfIndex.classList.add("text-danger");
+        validFeedback.innerText = "Can't be larger than 50";
+        loadingSpinner.classList.add("visually-hidden");
+    } else if (elementOfIndex.value === "") {
+        elementOfIndex.classList.add("is-invalid");
+        validFeedback.innerText = "Can't be empty";
+        loadingSpinner.classList.add("visually-hidden");
     } else {
-        getFibonacciFromServer(elementOfIndex.value);
+        elementOfResult.classList.remove("fs-5");
+        getFibonacciFromServer(elementOfIndex.value)
+            .then(result => {
+                if (parseInt(elementOfIndex.value) === 42) {
+                    elementOfResult.classList.add("text-danger");
+                    elementOfResult.classList.add("fs-5");
+                }
+                elementOfResult.innerHTML = `&nbsp;<u><b>${result}</b></u>`;
+                loadingSpinner.classList.add("visually-hidden");
+            });
+        getFibonacciResults().then(arrayOfResponses => addFibonacciResult(arrayOfResponses));
     }
 };
 
 function getFibonacciFromServer(num) {
-    elementOfResult.innerHTML = "";
-    loadingSpinner.classList.remove("visually-hidden");
-    elementOfResult.classList.remove("fs-5");
     let FIBONACCI_URL = `http://localhost:5050/fibonacci/${num}`;
-    fetch(FIBONACCI_URL)
+    return fetch(FIBONACCI_URL)
         .then(function (response) {
-            if (response.statusText === "OK") {
+            if (response.status === 200) {
                 return response.json();
             } else {
-                elementOfResult.innerHTML = `&nbsp;Server Error: 42 is the meaning of life`;
-                elementOfResult.classList.add("fs-5");
-                throw response;
+                return response.text();
             }
         })
         .then(function (data) {
-            if (data) {
-                elementOfResult.innerHTML = `&nbsp;<u><b>${data.result}</b></u>`;
-                loadingSpinner.classList.add("visually-hidden");
+            if (typeof data === 'object') {
+                return data.result;
             }
+            return data;
         })
         .catch(function (error) {
-            if (error) {
-                elementOfResult.classList.add("text-danger");
-                loadingSpinner.classList.add("visually-hidden");
-            }
+            return error;
         })
 };
 
-// function getFibonacciFromServer(num) {
-//     loadingSpinner.classList.remove("visually-hidden");
-//     let FIBONACCI_URL = `http://localhost:5050/fibonacci/${num}`;
-//     fetch(FIBONACCI_URL)
-//         .then(function (response) {
-//             console.log(response);
-//             if (!response.ok) {
-//                 console.log(response.value);
-//                 elementOfResult.classList.add("text-danger");
-//                 elementOfResult.innerHTML = `&nbsp;${response.statusText}`;
-//                 loadingSpinner.classList.add("visually-hidden");
-//             } else {
-//                 return response.json();
-//             }
-//         })
-//         .then(function (data) {
-//             elementOfResult.innerHTML = `&nbsp;<u><b>${data.result}</b></u>`;
-//             loadingSpinner.classList.add("visually-hidden");
-//         })
-// };
+function getFibonacciResults() {
+    const FIBONACCI_RESULT_URL = `http://localhost:5050/getFibonacciResults`;
+    return fetch(FIBONACCI_RESULT_URL)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            let arrayOfResponses = data.results;
+            arrayOfResponses.sort(function (firstObj, lastObj) { return lastObj.createdDate - firstObj.createdDate });
+            return arrayOfResponses;
+        })
+};
+
+function displayResults(array) {
+    let itemDate;
+    let currentItem;
+    for (let i = 0; i < 10; i++) {
+        itemDate = new Date(array[i].createdDate);
+        currentItem = array[i];
+        calcRes.innerHTML += `<span class="fs-5 border-bottom pb-3 border-secondary">&nbsp;The Fibonacci of <b>${currentItem.number}</b> is <b>${currentItem.result}</b>. Calculated at: ${itemDate}</span>`;
+    }
+};
+
+function addFibonacciResult(array) {
+    let itemDate = new Date(array[0].createdDate);
+    let currentItem = array[0];
+    calcRes.innerHTML = `<span class="fs-5 border-bottom pb-3 border-secondary">&nbsp;The Fibonacci of <b>${currentItem.number}</b> is <b>${currentItem.result}</b>. Calculated at: ${itemDate}</span>` + calcRes.innerHTML;
+};

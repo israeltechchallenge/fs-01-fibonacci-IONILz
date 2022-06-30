@@ -12,3 +12,20 @@ input[type="number"] {
   padding: 6px;
   font-family: sans-serif;
 }
+
+@media (max-width: 550px) {
+  #main-title {
+    font-size: 2rem;
+  }
+  #fibonacci-of,
+  #num2 {
+    font-size: 1.2rem;
+  }
+  #save-calc {
+    font-size: 1rem;
+  }
+
+  #fibonacci-form {
+    margin: 2rem;
+  }
+}

@@ -1,0 +1,31 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button,
+input[type="number"] {
+  -webkit-appearance: none;
+  margin: 0;
+  -moz-appearance: textfield;
+}
+#validationFeedback1 {
+  width: 10rem;
+  align-self: flex-end;
+  /* text-align: center; */
+  padding: 6px;
+  font-family: sans-serif;
+}
+
+@media (max-width: 550px) {
+  #main-title {
+    font-size: 2rem;
+  }
+  #fibonacci-of,
+  #num2 {
+    font-size: 1.2rem;
+  }
+  #save-calc {
+    font-size: 1rem;
+  }
+
+  #fibonacci-form {
+    margin: 2rem;
+  }
+}
